@@ -1,1 +1,1 @@
-https://rodrigo947.github.io/monkeyProblem/
+https://rodrigo947.github.io/monkeyProblem/index.html
