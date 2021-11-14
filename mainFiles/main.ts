@@ -17,8 +17,8 @@ function start(indexInitialBar: number, orderType: number) {
     Carga de estados
   */       
   let b0 = new VerticalBar('B0',[1,1,1,-1,-1,-1,1,-1,1,-1,-1,-1,-1,-1,1,-1,-1,-1],false)
-  let b1 = new VerticalBar('B1',[0,0,0,2,-1,-1,-1,-1,-1,2,2,-1,-1,-1,-1,-1,2,2],false)
-  let b2 = new VerticalBar('B2',[-1,3,3,1,-1,3,3,3,3,1,1,-1,3,1,-1,-1,2,2],false)
+  let b1 = new VerticalBar('B1',[0,0,0,2,-1,-1,0,-1,0,2,2,-1,-1,2,0,-1,2,2],false)
+  let b2 = new VerticalBar('B2',[-1,3,3,1,-1,3,3,3,3,1,1,-1,3,1,-1,-1,1,1],false)
   let b3 = new VerticalBar('B3',[-1,2,2,-1,4,2,2,2,2,-1,-1,4,2,-1,-1,4,-1,-1],false)
   let b4 = new VerticalBar('B4',[-1,-1,-1,-1,3,5,-1,-1,-1,-1,-1,3,5,-1,-1,3,-1,-1],false)
   let b5 = new VerticalBar('B5',[-1,6,6,-1,6,4,-1,-1,-1,-1,6,-1,4,-1,-1,-1,-1,-1],false)
