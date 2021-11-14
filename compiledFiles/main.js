@@ -17,23 +17,23 @@ var R2 = /** @class */ (function () {
         this.ruleName = 'R2 - Trocar de barra';
     }
     R2.prototype.canMakeAction = function (_a) {
+        var monkey = _a.monkey, verticalBars = _a.verticalBars, lastAction = _a.lastAction;
         /*
           Só é possível trocar de barra caso a ultima ação feita não foi a troca de barra
           e o nível que o macaco está na barra possui um conexão com outra barra
         */
-        var monkey = _a.monkey, verticalBars = _a.verticalBars, lastAction = _a.lastAction;
-        var hasConnection = (verticalBars[monkey.indexVerticalBar].conections[monkey.altitude] != -1);
+        var hasConnection = (verticalBars[monkey.indexVerticalBar].connections[monkey.altitude] != -1);
         return (lastAction !== this.ruleName && hasConnection);
     };
     R2.prototype.action = function (_a) {
         var monkey = _a.monkey, verticalBars = _a.verticalBars;
-        var indexNewBar = verticalBars[monkey.indexVerticalBar].conections[monkey.altitude];
+        var indexNewBar = verticalBars[monkey.indexVerticalBar].connections[monkey.altitude];
         var nameOldBar = verticalBars[monkey.indexVerticalBar].name;
         var nameNewBar = verticalBars[indexNewBar].name;
         monkey.changeBar(indexNewBar);
         return {
             monkey: monkey,
-            message: "O Macaco foi da barra " + nameOldBar + " para a barra " + nameNewBar + "\n"
+            message: "\n      <div class=\"alert alert-success\" role=\"alert\">\n        O Macaco foi da barra \n          <span class=\"badge rounded-pill bg-dark\">" + nameOldBar + "</span> \n          para a barra \n          <span class=\"badge rounded-pill bg-dark\">" + nameNewBar + "</span>\n      </div>\n        "
         };
     };
     return R2;
@@ -56,75 +56,82 @@ var R1 = /** @class */ (function () {
         monkey.altitude++;
         return {
             monkey: monkey,
-            message: "O Macaco subiu na barra " + verticalBars[monkey.indexVerticalBar].name + "\n"
+            message: "\n      <div class=\"alert alert-success\" role=\"alert\">\n        O Macaco subiu na barra \n          <span class=\"badge rounded-pill bg-dark\">\n            " + verticalBars[monkey.indexVerticalBar].name + " \n          </span> \n      </div>\n      "
         };
     };
     return R1;
 }());
 
 var VerticalBar = /** @class */ (function () {
-    function VerticalBar(name, conections, hasBanana) {
+    function VerticalBar(name, connections, hasBanana) {
         this.name = name;
-        this.conections = conections;
+        this.connections = connections;
         this.hasBanana = hasBanana;
     }
     return VerticalBar;
 }());
 
-//let b6 = new VerticalBar('B6',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],false)
-/*
-  Carga de estados
+/**
+ * @param indexInitialBar barra escolhida
+ * @param orderType ordem que as regras de transição serão executadas
 */
-var verticalBars = [];
-var maxAltitude = 17;
-var b0 = new VerticalBar('B0', [1, 1, 1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1], false);
-var b1 = new VerticalBar('B1', [0, 0, 0, 2, -1, -1, -1, -1, -1, 2, 2, -1, -1, -1, -1, -1, 2, 2], false);
-var b2 = new VerticalBar('B2', [-1, 3, 3, 1, -1, 3, 3, 3, 3, 1, 1, -1, 3, 1, -1, -1, 2, 2], false);
-var b3 = new VerticalBar('B3', [-1, 2, 2, -1, 4, 2, 2, 2, 2, -1, -1, 4, 2, -1, -1, 4, -1, -1], false);
-var b4 = new VerticalBar('B4', [-1, -1, -1, -1, 3, 5, -1, -1, -1, -1, -1, 3, 5, -1, -1, 3, -1, -1], false);
-var b5 = new VerticalBar('B5', [-1, 6, 6, -1, 6, 4, -1, -1, -1, -1, 6, -1, 4, -1, -1, -1, -1, -1], false);
-var b6 = new VerticalBar('B6', [-1, 5, 5, -1, 5, -1, -1, -1, -1, -1, 5, -1, -1, -1, -1, -1, -1, -1], true);
-verticalBars.push(b0);
-verticalBars.push(b1);
-verticalBars.push(b2);
-verticalBars.push(b3);
-verticalBars.push(b4);
-verticalBars.push(b5);
-verticalBars.push(b6);
-/*
-  Ordem que as regras de transição serão executadas
-*/
-var orderType = 2;
-var r1 = new R1();
-var r2 = new R2();
-var lastAction = 'estadoInicial';
-var rules = [];
-switch (orderType) {
-    case 1:
-        rules = [r1, r2];
-        break;
-    case 2:
-        rules = [r2, r1];
-        break;
-}
-function start() {
+function start(indexInitialBar, orderType) {
+    var verticalBars = [];
+    var rules = [];
+    var maxAltitude = 17;
+    /*
+      Carga de estados
+    */
+    var b0 = new VerticalBar('B0', [1, 1, 1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1], false);
+    var b1 = new VerticalBar('B1', [0, 0, 0, 2, -1, -1, -1, -1, -1, 2, 2, -1, -1, -1, -1, -1, 2, 2], false);
+    var b2 = new VerticalBar('B2', [-1, 3, 3, 1, -1, 3, 3, 3, 3, 1, 1, -1, 3, 1, -1, -1, 2, 2], false);
+    var b3 = new VerticalBar('B3', [-1, 2, 2, -1, 4, 2, 2, 2, 2, -1, -1, 4, 2, -1, -1, 4, -1, -1], false);
+    var b4 = new VerticalBar('B4', [-1, -1, -1, -1, 3, 5, -1, -1, -1, -1, -1, 3, 5, -1, -1, 3, -1, -1], false);
+    var b5 = new VerticalBar('B5', [-1, 6, 6, -1, 6, 4, -1, -1, -1, -1, 6, -1, 4, -1, -1, -1, -1, -1], false);
+    var b6 = new VerticalBar('B6', [-1, 5, 5, -1, 5, -1, -1, -1, -1, -1, 5, -1, -1, -1, -1, -1, -1, -1], true);
+    verticalBars.push(b0);
+    verticalBars.push(b1);
+    verticalBars.push(b2);
+    verticalBars.push(b3);
+    verticalBars.push(b4);
+    verticalBars.push(b5);
+    verticalBars.push(b6);
     /*
       Index da barra de onde o macaco irá começar
     */
-    var indexInitialBar = parseInt(document.getElementById('chosedBar').value) || 0;
     var monkey = new Monkey(indexInitialBar);
+    var lastAction = 'Estado Inicial';
+    /*
+      Definindo a ordem que as regras de transição serão executadas
+    */
+    var r1 = new R1();
+    var r2 = new R2();
+    switch (orderType) {
+        case 1:
+            rules = [r1, r2];
+            break;
+        case 2:
+            rules = [r2, r1];
+            break;
+    }
+    /*
+      Limpando a tela do console
+    */
     var console = document.getElementById('console');
-    console.value = '';
+    console.innerHTML = '';
+    /*
+      Executar as regras de transição até que o macaco atinja a altitude maxima
+    */
     while (monkey.altitude != maxAltitude) {
         rules.forEach(function (rule) {
             if (rule.canMakeAction({ monkey: monkey, verticalBars: verticalBars, lastAction: lastAction })) {
                 var result = rule.action({ monkey: monkey, verticalBars: verticalBars, lastAction: lastAction });
                 lastAction = rule.ruleName;
                 monkey = result.monkey;
-                console.value += result.message;
+                console.innerHTML += result.message;
             }
             else {
-                console.value += "N\u00E3o foi poss\u00EDvel executar a regra " + rule.ruleName + "\n";
+                console.innerHTML += "\n          <div class=\"alert alert-danger\" role=\"alert\">\n            N\u00E3o foi poss\u00EDvel executar a regra \n              <span class=\"badge rounded-pill bg-dark\">\n                " + rule.ruleName + "\n              </span> \n          </div> \n        ";
             }
         });
     }
@@ -132,11 +139,22 @@ function start() {
       Verificando o Estado Final: o macaco está na mesma barra da banana?
     */
     if (verticalBars[monkey.indexVerticalBar].hasBanana) {
-        console.value += "O macaco achou a banana";
+        console.innerHTML += "\n      <div class=\"alert alert-warning\" role=\"alert\">\n        O Macaco achou a banana \n      </div> \n    ";
     }
     else {
-        console.value += "O macaco n\u00E3o achou a banana";
+        console.innerHTML += "\n    <div class=\"alert alert-dark\" role=\"alert\">\n      O Macaco n\u00E3o achou a banana \n    </div> \n  ";
     }
 }
 var btnStart = document.getElementById('btnStart');
-btnStart.addEventListener('click', function (e) { return start(); });
+btnStart.addEventListener('click', function () {
+    // Barra escolhida 
+    var chosedBar = parseInt(document.getElementById('chosedBar').value);
+    // Verificando qual opção de transição foi escolhida
+    var chosedTransition = 1;
+    document.getElementsByName('ruleTransitionOptions').forEach(function (optionRadio) {
+        if (optionRadio.checked) {
+            chosedTransition = parseInt(optionRadio.value);
+        }
+    });
+    start(chosedBar, chosedTransition);
+});

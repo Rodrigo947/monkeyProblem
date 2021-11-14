@@ -21,7 +21,15 @@ class R1 implements ITransitionRule{
     monkey.altitude++
     return {
       monkey: monkey,
-      message: `O Macaco subiu na barra ${verticalBars[monkey.indexVerticalBar].name}\n`
+      
+      message: `
+      <div class="alert alert-success" role="alert">
+        O Macaco subiu na barra 
+          <span class="badge rounded-pill bg-dark">
+            ${verticalBars[monkey.indexVerticalBar].name} 
+          </span> 
+      </div>
+      `
     }
   }
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <title>Macacada</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <h1 class="text-center">Monkey Problem</h1>
+    <form>
+      <div class="row">
+        <div class="col-7">
+          <div id="console"></div>
+        </div>
+
+        <div class="col-5">
+          <img src="monkey.jpg" />
+          <label for="chosedBar" class="form-label">Barra Inicial</label>
+          <input id="chosedBar" class="form-control" type="number" min="0" max="6" placeholder="De 0 a 6">
+
+
+          <label for="chosedBar" class="form-label mt-2">Ordem de execução das regras de transição</label>
+
+          <div class="form-control border-none">
+            <div class="form-check form-check-inline">
+              <input id="ruleTransition1" class="form-check-input" type="radio" name="ruleTransitionOptions" value="1"
+                checked>
+              <label class="form-check-label" for="ruleTransition1">R1 -> R2</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input id="ruleTransition2" class="form-check-input" type="radio" name="ruleTransitionOptions" value="2">
+              <label class="form-check-label" for="ruleTransition2">R2 -> R1</label>
+            </div>
+          </div>
+
+          <button id="btnStart" type="button" class="btn btn-primary col-12 mt-3">Começar</button>
+        </div>
+
+      </div>
+    </form>
+
+    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../compiledFiles/main.js"></script>
+  </div>
+
+</body>
+
+</html>
